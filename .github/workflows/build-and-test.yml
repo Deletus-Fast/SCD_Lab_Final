@@ -44,10 +44,10 @@ jobs:
 
     - name: Run services using Docker Compose (for local testing)
       run: |
-        docker-compose -f docker-compose.yml up --build -d
+        docker compose up --build -d
 
     # - name: Test
     #   run: npm test
 
     - name: Stop Docker Compose services
-      run: docker-compose down
+      run: docker compose down
