@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faculty-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: faculty-service
+  template:
+    metadata:
+      labels:
+        app: faculty-service
+    spec:
+      containers:
+        - name: faculty-service
+          image: deletus/faculty:F
+          ports:
+            - containerPort: 5002
+          env:
+            - name: MONGO_URI
+              value: mongodb://mongodb-service:27017/ums-db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: faculty-service
+spec:
+  selector:
+    app: faculty-service
+  ports:
+    - port: 80
+      targetPort: 5002

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: student-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: student-service
+  template:
+    metadata:
+      labels:
+        app: student-service
+    spec:
+      containers:
+        - name: student-service
+          image: deletus/student:F
+          ports:
+            - containerPort: 5003
+          env:
+            - name: MONGO_URI
+              value: mongodb://mongodb-service:27017/ums-db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: student-service
+spec:
+  selector:
+    app: student-service
+  ports:
+    - port: 80
+      targetPort: 5003

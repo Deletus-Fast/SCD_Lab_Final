@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: examination-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: examination-service
+  template:
+    metadata:
+      labels:
+        app: examination-service
+    spec:
+      containers:
+        - name: examination-service
+          image: deletus/examination:F
+          ports:
+            - containerPort: 5001
+          env:
+            - name: MONGO_URI
+              value: mongodb://mongodb-service:27017/ums-db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: examination-service
+spec:
+  selector:
+    app: examination-service
+  ports:
+    - port: 80
+      targetPort: 5001
