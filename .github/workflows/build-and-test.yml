@@ -44,7 +44,7 @@ jobs:
 
     - name: Run services using Docker Compose (for local testing)
       run: |
-        docker compose up --build -d
+        docker compose ./UMS/services/docker-compose.yml up --build -d
 
     # - name: Test
     #   run: npm test
