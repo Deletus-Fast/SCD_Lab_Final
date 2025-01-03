@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  # Faculty Service
+  faculty-service:
+    build:
+      context: ./faculty
+      dockerfile: Dockerfile
+    container_name: faculty-service
+    ports:
+      - "5002:5002"  # Expose the service on a different port
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/faculty-info
+    depends_on:
+      - mongo
+    networks:
+      - ums-network
+
+  # Student Service
+  student-service:
+    build:
+      context: ./student
+      dockerfile: Dockerfile
+    container_name: student-service
+    ports:
+      - "5003:5003"  # Expose the service on a different port
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/studentInfoDB
+    depends_on:
+      - mongo
+    networks:
+      - ums-network
+
+  # Examination Service
+  examination-service:
+    build:
+      context: ./examination
+      dockerfile: Dockerfile
+    container_name: examination-service
+    ports:
+      - "5001:5001"  # Expose the service on a different port
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/examDB
+    depends_on:
+      - mongo
+    networks:
+      - ums-network
+
+  # Attendance Service
+  attendance-service:
+    build:
+      context: ./attendance
+      dockerfile: Dockerfile
+    container_name: attendance-service
+    ports:
+      - "5000:5000"  # Expose the service on a different port
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/ums
+    depends_on:
+      - mongo
+    networks:
+      - ums-network
+
+  # MongoDB
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - ums-network
+
+networks:
+  ums-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+    driver: local
